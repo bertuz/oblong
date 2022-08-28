@@ -5,9 +5,11 @@
 # Requires the `git-info` zmodule to be included in the .zimrc file.
 
 _prompt_basher_pwd() {
-  local git_root current_dir
-  if git_root=$(command git rev-parse --show-toplevel 2>/dev/null); then
-    current_dir="${PWD#${git_root:h}/}"
+  local git_root current_dir dir repo_name
+  if git_root=$(git rev-parse --show-cdup 2>/dev/null || false); then
+    dir=$(cd "./${git_root}" && pwd)
+    repo_name=$(basename "$(git rev-parse --show-toplevel)")
+    current_dir="${repo_name} | ${$(pwd)#${dir}}/"
   else
     current_dir=${(%):-%~}
   fi
