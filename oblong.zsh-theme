@@ -7,9 +7,9 @@
 _prompt_basher_pwd() {
   local git_root current_dir dir repo_name
   if git_root=$(git rev-parse --show-cdup 2>/dev/null || false); then
-    dir=$(cd "./${git_root}" && pwd)
+    dir=$(builtin cd "./${git_root}" && pwd)
     repo_name=$(basename "$(git rev-parse --show-toplevel)")
-    current_dir="${repo_name} | ${$(pwd)#${dir}}/"
+    current_dir="${repo_name} ${$(pwd)#${dir}}/"
   else
     current_dir=${(%):-%~}
   fi
